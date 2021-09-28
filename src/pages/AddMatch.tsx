@@ -14,8 +14,6 @@ interface FormData {
   playerB: string
   set1PlayerAScore: string
   set1PlayerBScore: string
-  set2PlayerAScore: string
-  set2PlayerBScore: string
 }
 
 const AddMatch: React.FC = () => {
@@ -45,10 +43,6 @@ const AddMatch: React.FC = () => {
         {
           scoreA: Number(data.set1PlayerAScore),
           scoreB: Number(data.set1PlayerBScore),
-        },
-        {
-          scoreA: Number(data.set2PlayerAScore),
-          scoreB: Number(data.set2PlayerBScore),
         },
       ],
     }
@@ -130,26 +124,10 @@ const AddMatch: React.FC = () => {
                 />
               </div>
             </div>
-            <h3 className="title is-4">Set 2</h3>
-            <div className="field is-grouped">
-              <div className="control">
-                <input
-                  required
-                  type="number"
-                  className="input"
-                  name="set2PlayerAScore"
-                />
-              </div>
-              {' to '}
-              <div className="control">
-                <input
-                  required
-                  type="number"
-                  className="input"
-                  name="set2PlayerBScore"
-                />
-              </div>
-            </div>
+            <p>
+              You can only save single-set matches for now. Contact Sawyer to
+              create a 2 or more set match.
+            </p>
             <button type="submit" className="button is-info">
               Save Match
             </button>
