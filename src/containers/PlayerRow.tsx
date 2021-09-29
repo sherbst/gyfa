@@ -4,6 +4,7 @@ import {
   calculateAverageGoalDifferential,
   calculateConcededShots,
   calculateMadeShots,
+  calculateWinStreak,
   displayWinLossRatio,
   findCompetingMatches,
   findWinningMatches,
@@ -24,6 +25,8 @@ const PlayerRow: React.FC<Props> = ({ player, matches, elo, rank }) => {
   const wins = winningMatches.length
   const losses = totalMatches - wins
 
+  const winStreak = calculateWinStreak(matches, player.id)
+
   return (
     <tr>
       <td>{rank}</td>
@@ -33,6 +36,7 @@ const PlayerRow: React.FC<Props> = ({ player, matches, elo, rank }) => {
       <td>{Math.round(elo)}</td>
       <td>{totalMatches}</td>
       <td>{wins}</td>
+      <td>{winStreak === 0 ? '' : winStreak}</td>
       <td>{losses}</td>
       <td>{displayWinLossRatio(wins, losses)}</td>
       <td>{calculateMadeShots(matches, player.id)}</td>
