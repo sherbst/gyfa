@@ -32,8 +32,8 @@ const ScoresPlayers: React.FC = () => {
                 <th>Elo</th>
                 <th>Matches</th>
                 <th>Wins</th>
-                <th>Streak</th>
                 <th>Losses</th>
+                <th>Streak</th>
                 <th>Win/Loss</th>
                 <th>Career Goals Scored</th>
                 <th>Career Goals Conceded</th>

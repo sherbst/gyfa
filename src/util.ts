@@ -200,10 +200,7 @@ export const findTopEloChangePlayer = (
 export const isSameDate = (a: Date, b: Date): boolean =>
   a.toDateString() === b.toDateString()
 
-export const calculateWinStreak = (
-  matches: Match[],
-  playerId: string
-): number => {
+export const calculateStreak = (matches: Match[], playerId: string): number => {
   // Most recent matches first
   const sortedMatches = matches
     .sort((a, b) => b.date.toMillis() - a.date.toMillis())
@@ -217,11 +214,13 @@ export const calculateWinStreak = (
     const opponentScore = calculatePlayerScoreFromMatch(match, opponentId)
     const didWin = score >= opponentScore
 
-    if (!didWin) {
-      return streak
+    if (didWin && streak >= 0) {
+      streak++
+    } else if (!didWin && streak <= 0) {
+      streak--
+    } else {
+      streak = 0
     }
-
-    streak++
   }
 
   return streak
