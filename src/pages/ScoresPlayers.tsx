@@ -27,6 +27,7 @@ const ScoresPlayers: React.FC = () => {
           <table className="table is-fullwidth">
             <tbody>
               <tr>
+                <th>Rank</th>
                 <th>Name</th>
                 <th>Elo</th>
                 <th>Matches</th>
@@ -38,7 +39,7 @@ const ScoresPlayers: React.FC = () => {
                 <th>Average Goal Differential</th>
               </tr>
               {matches &&
-                sortedPlayers.map((player) => (
+                sortedPlayers.map((player, i) => (
                   <PlayerRow
                     player={player}
                     elo={
@@ -47,6 +48,7 @@ const ScoresPlayers: React.FC = () => {
                     }
                     matches={matches}
                     key={player.id}
+                    rank={i + 1}
                   />
                 ))}
             </tbody>

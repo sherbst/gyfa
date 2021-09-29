@@ -13,9 +13,10 @@ interface Props {
   player: WithId<Player>
   matches: WithId<Match>[]
   elo: number
+  rank: number
 }
 
-const PlayerRow: React.FC<Props> = ({ player, matches, elo }) => {
+const PlayerRow: React.FC<Props> = ({ player, matches, elo, rank }) => {
   const competingMatches = findCompetingMatches(matches, player.id)
   const winningMatches = findWinningMatches(matches, player.id)
 
@@ -25,6 +26,7 @@ const PlayerRow: React.FC<Props> = ({ player, matches, elo }) => {
 
   return (
     <tr>
+      <td>{rank}</td>
       <td>
         {player.firstName} {player.lastName}
       </td>
