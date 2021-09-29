@@ -9,11 +9,11 @@ import Home from './pages/Home'
 import ScoresPlayers from './pages/ScoresPlayers'
 import ScoresMatches from './pages/ScoresMatches'
 import NotFound from './pages/NotFound'
-import Rules from './pages/Rules'
 import AddMatch from './pages/AddMatch'
 import Post from './pages/Post'
 
 const ABOUT_POST_ID = '9a1cacd4-1fb5-11ec-8b24-db1fcf7ad67e'
+const RULES_POST_ID = '2d1dee2c-213b-11ec-b9e8-a3caae865c4e'
 
 const App: React.FC = () => {
   return (
@@ -26,7 +26,7 @@ const App: React.FC = () => {
           <Post id={ABOUT_POST_ID} />
         </Route>
         <Route exact path="/rules">
-          <Rules />
+          <Post id={RULES_POST_ID} />
         </Route>
         <Route exact path="/posts/:id">
           <Post />
