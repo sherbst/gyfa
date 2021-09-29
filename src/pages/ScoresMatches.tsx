@@ -17,6 +17,10 @@ const ScoresMatches: React.FC = () => {
     0
   )
 
+  const sortedMatches = matches.sort(
+    (a, b) => b.date.toMillis() - a.date.toMillis()
+  )
+
   return (
     <>
       <Header />
@@ -35,8 +39,7 @@ const ScoresMatches: React.FC = () => {
                 ))}
               </tr>
               {players &&
-                matches &&
-                matches.map((match) => (
+                sortedMatches.map((match) => (
                   <MatchRow
                     key={match.id}
                     eloChange={

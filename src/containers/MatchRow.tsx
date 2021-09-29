@@ -35,7 +35,7 @@ const MatchRow: React.FC<Props> = ({ match, players, eloChange, maxSets }) => {
         </ConditionalStrong>
       </td>
       <td>
-        <FormattedDate date={match.date} />
+        <FormattedDate date={match.date} showTime />
       </td>
       <td>{Math.round(Math.abs(eloChange.eloChange))}</td>
       <td>
