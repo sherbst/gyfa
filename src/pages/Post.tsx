@@ -33,7 +33,7 @@ const Post: React.FC<Props> = ({ id: idProp }) => {
                 </p>
               )}
               {post.image && <img src={post.image} />}
-              <p className="content">{post.content}</p>
+              <p dangerouslySetInnerHTML={{ __html: post.content }}></p>
             </>
           ) : (
             <p>Loading ...</p>
