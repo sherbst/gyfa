@@ -8,18 +8,23 @@ import { calculatePlayerScoreFromMatch, EloChange } from '../util'
 interface Props {
   match: WithId<Match>
   players: WithId<Player>[]
-  eloChange: EloChange
+  eloChanges: EloChange[]
   maxSets: number
 }
 
-const MatchRow: React.FC<Props> = ({ match, players, eloChange, maxSets }) => {
-  const playerA = players.find((player) => player.id === match.playerA.id)
-  const playerB = players.find((player) => player.id === match.playerB.id)
+const MatchRow: React.FC<Props> = ({ match, players, eloChanges, maxSets }) => {
+  const playerA = players.find((player) => player.id === match.playerA.id)!
+  const playerB = players.find((player) => player.id === match.playerB.id)!
 
   const playerAScore = calculatePlayerScoreFromMatch(match, match.playerA.id)
   const playerBScore = calculatePlayerScoreFromMatch(match, match.playerB.id)
 
   const playerAWins = playerAScore > playerBScore
+
+  const winnerId = playerAWins ? playerA.id : playerB.id
+  const eloChange = eloChanges.find(
+    (change) => change.matchId === match.id && change.playerId === winnerId
+  )!
 
   if (!playerA || !playerB) return <tr />
 
@@ -37,7 +42,7 @@ const MatchRow: React.FC<Props> = ({ match, players, eloChange, maxSets }) => {
       <td>
         <FormattedDate date={match.date} showTime />
       </td>
-      <td>{Math.round(Math.abs(eloChange.eloChange))}</td>
+      <td>{Math.round(eloChange.eloChange)}</td>
       <td>
         <Score scoreA={playerAScore} scoreB={playerBScore} />
       </td>

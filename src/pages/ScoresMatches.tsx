@@ -42,9 +42,7 @@ const ScoresMatches: React.FC = () => {
                 sortedMatches.map((match) => (
                   <MatchRow
                     key={match.id}
-                    eloChange={
-                      eloChanges.find((change) => change.matchId === match.id)!
-                    }
+                    eloChanges={eloChanges}
                     match={match}
                     players={players}
                     maxSets={maxSets}
