@@ -203,8 +203,10 @@ export const isSameDate = (a: Date, b: Date): boolean =>
 export const calculateStreak = (matches: Match[], playerId: string): number => {
   // Most recent matches first
   const sortedMatches = matches
-    .sort((a, b) => b.date.toMillis() - a.date.toMillis())
+    .sort((a, b) => a.date.toMillis() - b.date.toMillis())
     .filter((match) => [match.playerA.id, match.playerB.id].includes(playerId))
+
+  console.log(sortedMatches)
 
   let streak = 0
   for (const match of sortedMatches) {
@@ -216,10 +218,12 @@ export const calculateStreak = (matches: Match[], playerId: string): number => {
 
     if (didWin && streak >= 0) {
       streak++
+    } else if (didWin) {
+      streak = 1
     } else if (!didWin && streak <= 0) {
       streak--
     } else {
-      streak = 0
+      streak = -1
     }
   }
 
