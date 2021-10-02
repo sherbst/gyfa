@@ -5,6 +5,8 @@ $red: #ea1c2d;
 $blue: #0071ba;
 
 $primary: $red;
+$danger: $red;
+
 $info: $blue;
 $link: $blue;
 
@@ -45,3 +47,4 @@ code {
 }
 
 @import '../node_modules/bulma/bulma.sass';
+@import '../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';

@@ -4,11 +4,17 @@ export type Timestamp = firebase.firestore.Timestamp
 export type Ref<T = any> = firebase.firestore.DocumentReference<T>
 export type WithId<T> = T & { id: string }
 
+export enum Role {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
+
 export interface Player {
   firstName: string
   lastName: string
   claimed?: boolean
   bio?: string
+  roles?: Role[]
 }
 
 export interface Match {

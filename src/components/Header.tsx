@@ -2,17 +2,21 @@ import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { faCog, faPlusSquare, faUser } from '@fortawesome/free-solid-svg-icons'
-import { useEffect } from 'react'
+import {
+  faCog,
+  faPlusSquare,
+  faUser,
+  faShieldAlt,
+  faSignOutAlt,
+} from '@fortawesome/free-solid-svg-icons'
 import { firestore } from '../firebase'
 import { useNullableUser } from '../util'
 import { useFirestoreDoc } from '../lib/db'
-import { Player } from '../types'
+import { Player, Role } from '../types'
 
 const Header: React.FC = () => {
   const [menuActive, setMenuActive] = useState(false)
-  const [user, userLoading] = useNullableUser()
+  const [user] = useNullableUser()
   const userDoc = useFirestoreDoc<Player>(
     firestore.collection('players').doc(user?.uid)
   )
@@ -61,7 +65,7 @@ const Header: React.FC = () => {
         </div>
 
         <div className="navbar-end">
-          {user ? (
+          {user && userDoc ? (
             <div className="navbar-item has-dropdown is-hoverable">
               <Link to="/" className="navbar-link">
                 <span className="icon">
@@ -93,6 +97,19 @@ const Header: React.FC = () => {
                   </span>
                   <span>Settings</span>
                 </Link>
+
+                {(userDoc.roles || []).includes(Role.ADMIN) && (
+                  <>
+                    <hr className="navbar-divider" />
+
+                    <Link to="/admin" className="navbar-item">
+                      <span className="icon">
+                        <FontAwesomeIcon icon={faShieldAlt} />
+                      </span>
+                      <span>Admin</span>
+                    </Link>
+                  </>
+                )}
 
                 <hr className="navbar-divider" />
 

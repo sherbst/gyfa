@@ -48,7 +48,9 @@ export function useFirestoreDoc<T>(unmemoizedRef?: Ref): WithId<T> | null {
   useEffect(() => {
     if (!ref) return
 
-    getFirestoreDoc<T>(ref).then(setVal)
+    getFirestoreDoc<T>(ref).then((newVal) => {
+      setVal(newVal)
+    })
   }, [ref])
 
   return val
