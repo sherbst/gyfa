@@ -1,9 +1,16 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faPlusSquare, faUser } from '@fortawesome/free-solid-svg-icons'
+import { useEffect } from 'react'
+import { firebase } from '../firebase'
+import { useNullableUser } from '../util'
 
 const Header: React.FC = () => {
   const [menuActive, setMenuActive] = useState(false)
+  const [user, userLoading] = useNullableUser()
 
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -45,16 +52,59 @@ const Header: React.FC = () => {
         </div>
 
         <div className="navbar-end">
-          <div className="navbar-item">
-            <div className="buttons">
-              <Link to="/scores" className="button is-info">
-                <strong>Scores</strong>
+          {user ? (
+            <div className="navbar-item has-dropdown is-hoverable">
+              <Link to="/" className="navbar-link">
+                <span className="icon">
+                  <FontAwesomeIcon icon={faUser} />
+                </span>
+                <span>Sawyer Herbst</span>
               </Link>
-              <Link to="/scores/matches/new" className="button is-light">
-                <strong>New Match</strong>
-              </Link>
+
+              <div className="navbar-dropdown">
+                <Link to="/logout" className="navbar-item">
+                  <span className="icon">
+                    <FontAwesomeIcon icon={faUser} />
+                  </span>
+                  <span>My Profile</span>
+                </Link>
+
+                <Link to="/logout" className="navbar-item">
+                  <span className="icon">
+                    <FontAwesomeIcon icon={faPlusSquare} />
+                  </span>
+                  <span>Add Match</span>
+                </Link>
+
+                <Link to="/logout" className="navbar-item">
+                  <span className="icon">
+                    <FontAwesomeIcon icon={faCog} />
+                  </span>
+                  <span>Settings</span>
+                </Link>
+
+                <hr className="navbar-divider" />
+
+                <Link to="/logout" className="navbar-item">
+                  <span className="icon">
+                    <FontAwesomeIcon icon={faSignOutAlt} />
+                  </span>
+                  <span>Log Out</span>
+                </Link>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="navbar-item">
+              <div className="buttons">
+                <Link to="/login" className="button is-info">
+                  Log in
+                </Link>
+                <Link to="/signup" className="button is-light">
+                  Sign up
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </nav>

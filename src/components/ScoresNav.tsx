@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation, Link } from 'react-router-dom'
+import TabsNav from './TabsNav'
 
 const ROUTES = [
   {
@@ -13,22 +13,7 @@ const ROUTES = [
 ]
 
 const ScoresNav: React.FC = () => {
-  const { pathname: currentPath } = useLocation()
-
-  return (
-    <>
-      <h1 className="title">Scores</h1>
-      <div className="tabs">
-        <ul>
-          {ROUTES.map(({ path, title }) => (
-            <li key={path} className={path === currentPath ? 'is-active' : ''}>
-              <Link to={path}>{title}</Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
-  )
+  return <TabsNav routes={ROUTES} title="Scores" />
 }
 
 export default ScoresNav

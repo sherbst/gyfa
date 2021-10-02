@@ -7,6 +7,7 @@ export type WithId<T> = T & { id: string }
 export interface Player {
   firstName: string
   lastName: string
+  claimed?: boolean
 }
 
 export interface Match {

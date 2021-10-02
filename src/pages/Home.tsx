@@ -8,6 +8,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Header />
+
       <section className="hero is-info is-large has-background">
         <img
           src="/images/players-close-up.jpg"

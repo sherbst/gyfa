@@ -1,5 +1,7 @@
 import { WithId, Match } from './types'
 import { ELO_INITIAL_RATING, ELO_K_FACTOR } from './config'
+import { firebase } from './firebase'
+import { useEffect, useState } from 'react'
 
 const WL_PRECISION = 2
 
@@ -228,4 +230,21 @@ export const calculateStreak = (matches: Match[], playerId: string): number => {
   }
 
   return streak
+}
+
+export function useNullableUser(): [firebase.User | null, boolean] {
+  const currentUser = firebase.auth().currentUser
+  const [user, setUser] = useState<firebase.User | null>(currentUser)
+  const [loading, setLoading] = useState(!currentUser)
+
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      setUser(user)
+      setLoading(false)
+    })
+
+    return unsubscribe
+  }, [])
+
+  return [user, loading]
 }
