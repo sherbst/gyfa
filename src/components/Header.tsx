@@ -5,12 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { faCog, faPlusSquare, faUser } from '@fortawesome/free-solid-svg-icons'
 import { useEffect } from 'react'
-import { firebase } from '../firebase'
+import { firestore } from '../firebase'
 import { useNullableUser } from '../util'
+import { useFirestoreDoc } from '../lib/db'
+import { Player } from '../types'
 
 const Header: React.FC = () => {
   const [menuActive, setMenuActive] = useState(false)
   const [user, userLoading] = useNullableUser()
+  const userDoc = useFirestoreDoc<Player>(
+    firestore.collection('players').doc(user?.uid)
+  )
 
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -58,7 +63,9 @@ const Header: React.FC = () => {
                 <span className="icon">
                   <FontAwesomeIcon icon={faUser} />
                 </span>
-                <span>Sawyer Herbst</span>
+                <span>
+                  {userDoc?.firstName} {userDoc?.lastName}
+                </span>
               </Link>
 
               <div className="navbar-dropdown">
