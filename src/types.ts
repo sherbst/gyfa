@@ -8,6 +8,7 @@ export interface Player {
   firstName: string
   lastName: string
   claimed?: boolean
+  bio?: string
 }
 
 export interface Match {

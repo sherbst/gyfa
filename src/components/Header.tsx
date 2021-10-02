@@ -54,6 +54,10 @@ const Header: React.FC = () => {
           <Link to="/rules" className="navbar-item has-text-info">
             Rules
           </Link>
+
+          <Link to="/scores" className="navbar-item has-text-info">
+            Scores
+          </Link>
         </div>
 
         <div className="navbar-end">
@@ -69,21 +73,21 @@ const Header: React.FC = () => {
               </Link>
 
               <div className="navbar-dropdown">
-                <Link to="/logout" className="navbar-item">
+                <Link to={`/players/${user.uid}`} className="navbar-item">
                   <span className="icon">
                     <FontAwesomeIcon icon={faUser} />
                   </span>
                   <span>My Profile</span>
                 </Link>
 
-                <Link to="/logout" className="navbar-item">
+                <Link to="/scores/matches/new" className="navbar-item">
                   <span className="icon">
                     <FontAwesomeIcon icon={faPlusSquare} />
                   </span>
                   <span>Add Match</span>
                 </Link>
 
-                <Link to="/logout" className="navbar-item">
+                <Link to="/settings" className="navbar-item">
                   <span className="icon">
                     <FontAwesomeIcon icon={faCog} />
                   </span>

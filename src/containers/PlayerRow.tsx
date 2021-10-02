@@ -9,6 +9,7 @@ import {
   findCompetingMatches,
   findWinningMatches,
 } from '../util'
+import { Link } from 'react-router-dom'
 
 interface Props {
   player: WithId<Player>
@@ -31,7 +32,9 @@ const PlayerRow: React.FC<Props> = ({ player, matches, elo, rank }) => {
     <tr>
       <td>{rank}</td>
       <td>
-        {player.firstName} {player.lastName}
+        <Link to={`/players/${player.id}`}>
+          {player.firstName} {player.lastName}
+        </Link>
       </td>
       <td>{Math.round(elo)}</td>
       <td>{totalMatches}</td>

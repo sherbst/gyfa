@@ -14,6 +14,8 @@ import Post from './pages/Post'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import Logout from './pages/Logout'
+import Profile from './pages/Profile'
+import Settings from './pages/Settings'
 
 const ABOUT_POST_ID = '9a1cacd4-1fb5-11ec-8b24-db1fcf7ad67e'
 const RULES_POST_ID = '2d1dee2c-213b-11ec-b9e8-a3caae865c4e'
@@ -33,6 +35,12 @@ const App: React.FC = () => {
         </Route>
         <Route exact path="/posts/:id">
           <Post />
+        </Route>
+        <Route exact path="/players/:uid">
+          <Profile />
+        </Route>
+        <Route exact path="/settings">
+          <Settings />
         </Route>
 
         <Route exact path="/scores">
