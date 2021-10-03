@@ -5,6 +5,13 @@ import { useParams } from 'react-router-dom'
 import { Post as IPost } from '../types'
 import Header from '../components/Header'
 import FormattedDate from '../components/FormattedDate'
+import styled from 'styled-components'
+
+const ContentWrapper = styled.div`
+  & > p:not(:last-child) {
+    padding-bottom: 1.5rem;
+  }
+`
 
 interface Params {
   id?: string
@@ -33,7 +40,9 @@ const Post: React.FC<Props> = ({ id: idProp }) => {
                 </p>
               )}
               {post.image && <img src={post.image} />}
-              <p dangerouslySetInnerHTML={{ __html: post.content }}></p>
+              <ContentWrapper
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
             </>
           ) : (
             <p>Loading ...</p>
