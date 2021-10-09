@@ -8,12 +8,12 @@ import h2p from 'html2plaintext'
 const News: React.FC = () => {
   const posts = (useFirestoreCollection<WithId<Post>>('posts') || [])
     .filter((post) => !post.hidden)
-    .sort((a, b) => a.date.toMillis() - b.date.toMillis())
+    .sort((a, b) => b.date.toMillis() - a.date.toMillis())
 
   return (
-    <div className="columns">
+    <div className="columns is-multiline">
       {posts.map((post) => (
-        <div className="column is-one-third">
+        <div key={post.id} className="column is-one-third">
           <div className="card">
             <header className="card-header">
               <p className="card-header-title">{post.title}</p>
