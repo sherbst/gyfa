@@ -77,9 +77,9 @@ const App: React.FC = () => {
         <Route exact path="/scores/matches">
           <ScoresMatches />
         </Route>
-        <Route exact path="/scores/matches/new">
+        <ProtectedRoute exact path="/scores/matches/new">
           <AddMatch />
-        </Route>
+        </ProtectedRoute>
 
         <Route exact path="/login">
           <Login />
