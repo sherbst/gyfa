@@ -208,8 +208,6 @@ export const calculateStreak = (matches: Match[], playerId: string): number => {
     .sort((a, b) => a.date.toMillis() - b.date.toMillis())
     .filter((match) => [match.playerA.id, match.playerB.id].includes(playerId))
 
-  console.log(sortedMatches)
-
   let streak = 0
   for (const match of sortedMatches) {
     const opponentId =
