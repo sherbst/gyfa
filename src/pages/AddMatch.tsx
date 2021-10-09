@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 import { useFirestoreCollection } from '../lib/db'
 import { Match, Player, Ref } from '../types'
@@ -15,7 +15,11 @@ interface FormData {
 const AddMatch: React.FC = () => {
   const players = useFirestoreCollection<Player>('players') || []
 
+  const [isLoading, setLoading] = useState(false)
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true)
+
     e.preventDefault()
 
     const data = Object.fromEntries(
@@ -47,6 +51,7 @@ const AddMatch: React.FC = () => {
   return (
     <>
       <Header />
+
       <section className="section">
         <h1 className="title">Add Match</h1>
         <form onSubmit={handleSubmit}>
@@ -100,7 +105,7 @@ const AddMatch: React.FC = () => {
             You can only save single-set matches for now. Contact Sawyer to
             create a 2 or more set match.
           </p>
-          <button type="submit" className="button is-info">
+          <button type="submit" className="button is-info" disabled={isLoading}>
             Save Match
           </button>
         </form>
