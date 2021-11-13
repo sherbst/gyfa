@@ -56,7 +56,7 @@ const Profile: React.FC = () => {
         (pair) =>
           pair.playerId === uid && dayjs(pair.date).isSameOrBefore(date, 'day')
       )
-      .sort((pair) => (dayjs(pair.date).isAfter(date, 'day') ? -1 : 1))[0]
+      .sort((a, b) => (dayjs(a.date).isAfter(b.date, 'day') ? -1 : 1))[0]
 
     const dailyMatches = matches.filter(
       (match) =>
