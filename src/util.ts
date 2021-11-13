@@ -106,11 +106,13 @@ export interface EloChange {
 export interface PlayerEloPair {
   playerId: string
   elo: number
+  date: Date
 }
 
 export interface EloCalculationResults {
   playerEloPairs: PlayerEloPair[]
   eloChanges: EloChange[]
+  dailyEloPlayerPairs: PlayerEloPair[]
 }
 
 export const calculateElo = (
@@ -119,23 +121,44 @@ export const calculateElo = (
   // Always make sure matches are sorted first
   matches = matches.sort((a, b) => a.date.toMillis() - b.date.toMillis())
 
-  const playerEloPairs: PlayerEloPair[] = []
   const eloChanges: EloChange[] = []
+  const dailyEloPlayerPairs: PlayerEloPair[] = []
 
   const findPlayerEloPair = (playerId: string): PlayerEloPair => {
-    let playerEloPair = playerEloPairs.find(
-      (pair) => pair.playerId === playerId
+    return dailyEloPlayerPairs
+      .filter((pair) => pair.playerId === playerId)
+      .sort((a, b) => b.date.getTime() - a.date.getTime())[0]
+  }
+
+  const updatePlayerEloPair = (playerId: string, elo: number, date: Date) => {
+    const eloPair = dailyEloPlayerPairs.find(
+      (pair) =>
+        pair.playerId === playerId &&
+        pair.date.toDateString() === date.toDateString()
     )
 
-    if (!playerEloPair) {
-      playerEloPair = { playerId, elo: ELO_INITIAL_RATING }
-      playerEloPairs.push(playerEloPair)
+    if (eloPair) {
+      eloPair.elo = elo
+    } else {
+      dailyEloPlayerPairs.push({ elo, playerId, date })
     }
-
-    return playerEloPair
   }
 
   for (const match of matches) {
+    if (!dailyEloPlayerPairs.some((pair) => pair.playerId === match.playerA.id))
+      dailyEloPlayerPairs.push({
+        date: match.date.toDate(),
+        elo: ELO_INITIAL_RATING,
+        playerId: match.playerA.id,
+      })
+
+    if (!dailyEloPlayerPairs.some((pair) => pair.playerId === match.playerB.id))
+      dailyEloPlayerPairs.push({
+        date: match.date.toDate(),
+        elo: ELO_INITIAL_RATING,
+        playerId: match.playerB.id,
+      })
+
     const qa = 10 ** (findPlayerEloPair(match.playerA.id).elo / 400)
     const qb = 10 ** (findPlayerEloPair(match.playerB.id).elo / 400)
 
@@ -154,7 +177,11 @@ export const calculateElo = (
 
       const initialEloPair = findPlayerEloPair(playerId)
       const eloChange = ELO_K_FACTOR * (score - expectedScore)
-      initialEloPair.elo += eloChange
+      updatePlayerEloPair(
+        playerId,
+        initialEloPair.elo + eloChange,
+        match.date.toDate()
+      )
 
       eloChanges.push({
         matchId: match.id,
@@ -165,7 +192,23 @@ export const calculateElo = (
     }
   }
 
-  return { playerEloPairs, eloChanges }
+  const playerEloPairs: PlayerEloPair[] = []
+  for (const dailyPlayerEloPair of dailyEloPlayerPairs.sort(
+    (a, b) => a.date.getTime() - b.date.getTime()
+  )) {
+    const eloPair = playerEloPairs.find(
+      (pair) => pair.playerId === dailyPlayerEloPair.playerId
+    )
+
+    if (eloPair) {
+      eloPair.elo = dailyPlayerEloPair.elo
+      eloPair.date = dailyPlayerEloPair.date
+    } else {
+      playerEloPairs.push({ ...dailyPlayerEloPair })
+    }
+  }
+
+  return { playerEloPairs, eloChanges, dailyEloPlayerPairs }
 }
 
 export const findTopEloChangePlayer = (
