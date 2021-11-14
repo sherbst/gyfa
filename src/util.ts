@@ -1,4 +1,4 @@
-import { WithId, Match } from './types'
+import { WithId, Match, Player } from './types'
 import { ELO_INITIAL_RATING, ELO_K_FACTOR } from './config'
 import { firebase } from './firebase'
 import { useEffect, useState } from 'react'
@@ -116,7 +116,8 @@ export interface EloCalculationResults {
 }
 
 export const calculateElo = (
-  matches: WithId<Match>[]
+  matches: WithId<Match>[],
+  kFactor?: number
 ): EloCalculationResults => {
   // Always make sure matches are sorted first
   matches = matches.sort((a, b) => a.date.toMillis() - b.date.toMillis())
@@ -176,7 +177,7 @@ export const calculateElo = (
       const score = points / (points + opponentPoints)
 
       const initialEloPair = findPlayerEloPair(playerId)
-      const eloChange = ELO_K_FACTOR * (score - expectedScore)
+      const eloChange = (kFactor || ELO_K_FACTOR) * (score - expectedScore)
       updatePlayerEloPair(
         playerId,
         initialEloPair.elo + eloChange,

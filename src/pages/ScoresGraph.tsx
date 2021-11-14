@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import {
   CartesianGrid,
@@ -14,9 +14,11 @@ import {
 import Header from '../components/Header'
 import ScoresNav from '../components/ScoresNav'
 import { useFirestoreCollection } from '../lib/db'
-import { Match, Player } from '../types'
-import { calculateElo } from '../util'
+import { Match, Player, Role } from '../types'
+import { calculateElo, PlayerEloPair, useNullableUser } from '../util'
 import Colorhash from 'color-hash'
+import { ELO_K_FACTOR } from '../config'
+import { useDebounce } from 'use-debounce/lib'
 
 interface PlayerOption {
   value: string
@@ -37,14 +39,27 @@ const colorhash = new Colorhash({
 const ScoresGraph: React.FC = () => {
   const players = useFirestoreCollection<Player>('players')
   const matches = useFirestoreCollection<Match>('matches')
+  const [user] = useNullableUser()
 
   const [activePlayers, setActivePlayers] = useState<readonly PlayerOption[]>(
     []
   )
+  const [liveKFactor, setKFactor] = useState(ELO_K_FACTOR.toString())
+  const [dailyEloPlayerPairs, setDailyEloPlayerPairs] = useState<
+    PlayerEloPair[]
+  >([])
+
+  const [kFactor] = useDebounce(liveKFactor, 1000)
+
+  useEffect(() => {
+    if (!matches || !Number(kFactor)) return
+
+    setDailyEloPlayerPairs(
+      calculateElo(matches, Number(kFactor)).dailyEloPlayerPairs
+    )
+  }, [matches, kFactor])
 
   if (!players || !matches) return <p>Loading...</p>
-
-  const { dailyEloPlayerPairs } = calculateElo(matches)
 
   let chartData: ChartDataPoint[] = []
   const today = dayjs()
@@ -93,6 +108,32 @@ const ScoresGraph: React.FC = () => {
             value={activePlayers}
           />
         </div>
+
+        {user?.uid &&
+          players
+            .find((p) => p.id === user.uid)
+            ?.roles?.includes(Role.ADMIN) && (
+            <div className="box">
+              <h5 className="title is-5">Admin Settings</h5>
+              <p>
+                <em>
+                  These settings only affect what is shown on the graph for this
+                  session.
+                </em>
+              </p>
+              <div className="field">
+                <label className="label">Elo K-factor</label>
+                <div className="control">
+                  <input
+                    type="text"
+                    className="input"
+                    value={liveKFactor}
+                    onChange={(e) => setKFactor(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
         <div className="box">
           <ResponsiveContainer width="100%" aspect={2}>
