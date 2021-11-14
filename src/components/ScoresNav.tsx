@@ -10,6 +10,10 @@ const ROUTES = [
     path: '/scores/matches',
     title: 'Matches',
   },
+  {
+    path: '/scores/graph',
+    title: 'Graph',
+  },
 ]
 
 const ScoresNav: React.FC = () => {

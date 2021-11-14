@@ -11,7 +11,7 @@ interface Props {
   title?: string
 }
 
-const ScoresNav: React.FC<Props> = ({ routes, title }) => {
+const TabsNav: React.FC<Props> = ({ routes, title }) => {
   const { pathname: currentPath } = useLocation()
 
   return (
@@ -30,4 +30,4 @@ const ScoresNav: React.FC<Props> = ({ routes, title }) => {
   )
 }
 
-export default ScoresNav
+export default TabsNav
